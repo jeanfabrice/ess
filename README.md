@@ -1,4 +1,5 @@
-[<img src="https://github.com/jeanfabrice/ess/actions/workflows/build-and-release.yml/badge.svg?style=flat">](https://github.com/jeanfabrice/ess/actions/workflows/build-and-release.yml) [<img src="https://img.shields.io/github/release/jeanfabrice/ess.svg?style=flat">](https://github.com/jeanfabrice/ess/releases/latest)
+[<img src="https://github.com/jeanfabrice/ess/actions/workflows/build-and-release.yml/badge.svg?style=flat">](https://github.com/jeanfabrice/ess/actions/workflows/build-and-release.yml) [<img src="https://img.shields.io/github/v/release/jeanfabrice/ess?style=flat">](https://github.com/jeanfabrice/ess/releases/latest)
+
 
 # ESS
 
