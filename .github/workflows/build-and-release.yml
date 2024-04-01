@@ -1,0 +1,105 @@
+name: Build and Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+permissions: write-all
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Set up Go ${{ matrix.go-version }}
+        uses: actions/setup-go@v4
+        with:
+          go-version: ${{ matrix.go-version }}
+
+      - name: Check out code
+        uses: actions/checkout@v4
+
+      - name: Build for Linux
+        run: GOOS=linux GOARCH=amd64 go build -o ess-linux-amd64 ./cmd
+
+      - name: Build for Windows
+        run: GOOS=windows GOARCH=amd64 go build -o ess-windows-amd64.exe ./cmd
+
+      - name: Build for macOS
+        run: GOOS=darwin GOARCH=amd64 go build -o ess-darwin-amd64 ./cmd
+
+      - name: Build for macOS Apple Silicon
+        run: GOOS=darwin GOARCH=amd64 go build -o ess-darwin-arm64 ./cmd
+
+      - name: Archive production artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          path: ess-*
+
+  release:
+    needs: build
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Download artifacts
+        uses: actions/download-artifact@v4
+        with:
+          merge-multiple: true
+
+      - name: Create Release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ github.ref }}
+          release_name: Release ${{ github.ref }}
+          body: |
+            This is an automated release containing compiled binaries for various platforms.
+          draft: false
+          prerelease: false
+
+      - name: Upload Release Assets
+        id: upload-release-assets-linux-amd64
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./ess-linux-amd64
+          asset_name: ess-linux-amd64
+          asset_content_type: application/octet-stream
+
+      - name: Upload Release Assets
+        id: upload-release-assets-windows-amd64
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./ess-windows-amd64.exe
+          asset_name: ess-windows-amd64.exe
+          asset_content_type: application/octet-stream
+
+      - name: Upload Release Assets
+        id: upload-release-assets-darwin-amd64
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./ess-darwin-amd64
+          asset_name: ess-darwin-amd64
+          asset_content_type: application/octet-stream
+
+      - name: Upload Release Assets
+        id: upload-release-assets-darwin-arm64
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./ess-darwin-arm64
+          asset_name: ess-darwin-arm64
+          asset_content_type: application/octet-stream
