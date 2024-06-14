@@ -10,8 +10,12 @@ import (
 )
 
 type Rule struct {
-	ID     string `json:"id"`
-	Source string `json:"source"`
+	ID                string `json:"id"`
+	Source            string `json:"source"`
+	AzureEndpointName string `json:"azure_endpoint_name"`
+	AzureEndpointGuid string `json:"azure_endpoint_guid"`
+	Region            string `json:"region"`
+	LinkId            string `json:"link_id"`
 }
 
 type RulesetDetails struct {
@@ -116,7 +120,21 @@ func formatRulesetOutput(data []RulesetDetails) string {
 		ret += fmt.Sprintln("Rules:")
 		for _, rule := range ruleset.Rules {
 			ret += fmt.Sprintln("  - ID:", rule.ID)
-			ret += fmt.Sprintln("    Source:", rule.Source)
+			if rule.Source != "" {
+				ret += fmt.Sprintln("    Source:", rule.Source)
+			}
+			if rule.AzureEndpointName != "" {
+				ret += fmt.Sprintln("    Azure Endpoint Name:", rule.AzureEndpointName)
+			}
+			if rule.AzureEndpointGuid != "" {
+				ret += fmt.Sprintln("    Azure Endpoint Guid:", rule.AzureEndpointGuid)
+			}
+			if rule.Region != "" {
+				ret += fmt.Sprintln("    Region:", rule.Region)
+			}
+			if rule.LinkId != "" {
+				ret += fmt.Sprintln("    Link ID:", rule.LinkId)
+			}
 		}
 		ret += fmt.Sprintln()
 	}

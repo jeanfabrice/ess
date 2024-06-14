@@ -1,6 +1,5 @@
 [<img src="https://github.com/jeanfabrice/ess/actions/workflows/build-and-release.yml/badge.svg?style=flat">](https://github.com/jeanfabrice/ess/actions/workflows/build-and-release.yml) [<img src="https://img.shields.io/github/v/release/jeanfabrice/ess?style=flat">](https://github.com/jeanfabrice/ess/releases/latest)
 
-
 # ESS
 
 This is a multi purpose command-line utility written in Go to interact with an [Elasticsearch Service](https://www.elastic.co/guide/en/cloud/current/index.html) deployment.
