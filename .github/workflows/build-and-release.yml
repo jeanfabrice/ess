@@ -30,7 +30,7 @@ jobs:
         run: GOOS=darwin GOARCH=amd64 go build -o ess-darwin-amd64 ./cmd
 
       - name: Build for macOS Apple Silicon
-        run: GOOS=darwin GOARCH=amd64 go build -o ess-darwin-arm64 ./cmd
+        run: GOOS=darwin GOARCH=arm64 go build -o ess-darwin-arm64 ./cmd
 
       - name: Archive production artifacts
         uses: actions/upload-artifact@v4
