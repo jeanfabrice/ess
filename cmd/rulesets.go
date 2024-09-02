@@ -10,12 +10,14 @@ import (
 )
 
 type Rule struct {
-	ID                string `json:"id"`
-	Source            string `json:"source"`
-	AzureEndpointName string `json:"azure_endpoint_name"`
-	AzureEndpointGuid string `json:"azure_endpoint_guid"`
-	Region            string `json:"region"`
-	LinkId            string `json:"link_id"`
+	ID                 string `json:"id"`
+	Source             string `json:"source"`
+	AzureEndpointName  string `json:"azure_endpoint_name"`
+	AzureEndpointGuid  string `json:"azure_endpoint_guid"`
+	Region             string `json:"region"`
+	RemoteClusterId    string `json:"remote_cluster_id"`
+	RemoteClusterOrgId string `json:"remote_cluster_org_id"`
+	LinkId             string `json:"link_id"`
 }
 
 type RulesetDetails struct {
@@ -131,6 +133,12 @@ func formatRulesetOutput(data []RulesetDetails) string {
 			}
 			if rule.Region != "" {
 				ret += fmt.Sprintln("    Region:", rule.Region)
+			}
+			if rule.RemoteClusterOrgId != "" {
+				ret += fmt.Sprintln("    Remote Cluster Organisation Id:", rule.RemoteClusterOrgId)
+			}
+			if rule.RemoteClusterId != "" {
+				ret += fmt.Sprintln("    Remote Cluster Id:", rule.RemoteClusterId)
 			}
 			if rule.LinkId != "" {
 				ret += fmt.Sprintln("    Link ID:", rule.LinkId)
