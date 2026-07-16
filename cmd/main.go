@@ -17,6 +17,7 @@ const (
 	DeploymentIdRegexp = `^[a-f0-9]{32}$`
 	OptA               = "main-elasticsearch"
 	OptB               = "elasticsearch"
+	OptC               = "es-ref-id"
 	NotFound           = "resource_not_found"
 )
 
@@ -115,11 +116,19 @@ func main() {
 			log.Fatal(err.Error())
 		}
 
-		// Resend command with a different URL
+		// Resend command with a different URL if resource not found
 		if strings.Contains(response, NotFound) {
 			response, err = runCommand(deploymentId, apiKey, essApiEndpoint, OptB, command)
 			if err != nil {
 				log.Fatal(err.Error())
+			}
+
+			// Try third option if still not found
+			if strings.Contains(response, NotFound) {
+				response, err = runCommand(deploymentId, apiKey, essApiEndpoint, OptC, command)
+				if err != nil {
+					log.Fatal(err.Error())
+				}
 			}
 		}
 
